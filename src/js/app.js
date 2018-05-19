@@ -37,7 +37,8 @@ App = {
 			donateInstance = instance;
 			return donateInstance.donateAmount(parseInt(donorId), parseInt(receiverId), parseInt(amount));
 		}).then(function(result) {
-			console.log("Donation Complete");
+			$("#balance_d"+donorId).text(donateInstance.getDonorBalance(donorId));
+			$("#balance_d"+receiverId).text(donateInstance.getAcceptorBalance(receiverId));
 		}).catch(function(err) {
 			console.log(err.message);
 		});
