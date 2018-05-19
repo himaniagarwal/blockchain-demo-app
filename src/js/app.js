@@ -24,10 +24,27 @@ App = {
 			App.contracts.Donate = TruffleContract(DonateArtifact);
 
 			App.contracts.Donate.setProvider(App.web3Provider);
-			App.getBalance();
-			App.donate(1,1,1);
 		});
-	}
+	},
+
+	donate: function(donorId, receiverId, amount) {
+		var donorId = $("#donorId").val();
+		var receiverId = $("#receiverId").val();
+		var amount = $("#amount").val();
+		var donateInstance;
+
+		App.contracts.Donate.deployed().then(function(instance) {
+			donateInstance = instance;
+			return donateInstance.donateAmount(parseInt(donorId), parseInt(receiverId), parseInt(amount));
+		}).then(function(result) {
+			console.log("Donation Complete");
+		}).catch(function(err) {
+			console.log(err.message);
+		});
+	},
+
+
+
 }
 $(function() {
 	$(document).ready(function() {
