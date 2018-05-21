@@ -37,11 +37,16 @@ App = {
 			donateInstance = instance;
 			return donateInstance.donateAmount(parseInt(donorId), parseInt(receiverId), parseInt(amount));
 		}).then(function(result) {
-			$("#balance_d"+donorId).text(donateInstance.getDonorBalance(donorId));
-			$("#balance_d"+receiverId).text(donateInstance.getAcceptorBalance(receiverId));
+			{
+				donateInstance.getDonorBalance(donorId).then(function (result){
+					$("#balance_d"+donorId).text(result.c[0]);
+				});
+			}
+			$("#balance_d"+receiverId).text(donateInstance.getAcceptorBalance(receiverId)).call();
 		}).catch(function(err) {
 			console.log(err.message);
 		});
+
 	},
 
 
