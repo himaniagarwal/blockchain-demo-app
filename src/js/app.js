@@ -19,7 +19,7 @@ App = {
 	},
 
 	initContract: function() {
-		$.getJSON('Donate.json', function(data) {
+		return $.getJSON('Donate.json', function(data) {
 			var DonateArtifact = data;
 			App.contracts.Donate = TruffleContract(DonateArtifact);
 
@@ -38,11 +38,9 @@ App = {
 			return donateInstance.donateAmount(parseInt(donorId), parseInt(receiverId), parseInt(amount));
 		}).then(function(result) {
 			{
-				donateInstance.getDonorBalance(donorId).then(function (result){
-					$("#balance_d"+donorId).text(result.c[0]);
-				});
+				App.getDonorBalance(donateInstance,donorId);
+				App.getAcceptorBalance(donateInstance,receiverId);
 			}
-			$("#balance_d"+receiverId).text(donateInstance.getAcceptorBalance(receiverId)).call();
 		}).catch(function(err) {
 			console.log(err.message);
 		});
@@ -50,10 +48,34 @@ App = {
 	},
 
 
+	getDonorBalance: function(donateInstance, donorId) {
+		donateInstance.getDonorBalance(donorId).then(function (result){
+			$("#balance_d"+donorId).text(result.c[0]);
+		});
+	},
 
+	getAcceptorBalance: function(donateInstance, acceptorId) {
+		donateInstance.getAcceptorBalance(acceptorId).then(function (result){
+			$("#balance_a"+acceptorId).text(result.c[0]);
+		});
+	},
+
+	showBalances: function() {
+		App.contracts.Donate.deployed().then(function(instance) {
+			donateInstance = instance;
+			for(var i=1;i<3;i++) {
+				App.getDonorBalance(donateInstance, i);
+			}
+			for(var i=1;i<4;i++) {
+				App.getAcceptorBalance(donateInstance, i);
+			}
+		})
+	},
 }
 $(function() {
 	$(document).ready(function() {
-		App.init();
+		App.init().then(function(empty){
+			App.showBalances();
+		});
 	});
 });
