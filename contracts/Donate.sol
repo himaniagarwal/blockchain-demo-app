@@ -18,13 +18,13 @@ contract Donate {
  
 constructor() public{
   
-  donors.push(Donor(1,"abcd",1000));
-  donors.push(Donor(2,"abcde",1000));
+  donors.push(Donor(1,"Iron Man",1000));
+  donors.push(Donor(2,"Thor",1000));
 
 
-  acceptors.push(Acceptor(1,"pqrs",0));
-  acceptors.push(Acceptor(2,"pqrst",0));
-  acceptors.push(Acceptor(3,"blablah",0));
+  acceptors.push(Acceptor(1,"Superman",0));
+  acceptors.push(Acceptor(2,"Batman",0));
+  acceptors.push(Acceptor(3,"Flash",0));
  }
 
  function donateAmount(uint donor_id , uint acceptor_id , uint amount) public{
